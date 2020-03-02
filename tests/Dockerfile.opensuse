@@ -1,4 +1,4 @@
-ARG SUSE_IMAGE=opensuse/leap:42.3
+ARG SUSE_IMAGE=opensuse/leap:15
 FROM $SUSE_IMAGE
 RUN zypper -n install kernel-default \
                       kexec-tools    \
