@@ -1,7 +1,13 @@
 #!/bin/bash
-HYPERVISOR_URI=$1
+
 SUSE_IMAGE=opensuse/leap:15
 TARGET_IMAGE=ktest-$(tr : - <<< $SUSE_IMAGE)
+set HYPERVISOR_ARG
+
+if [ -z $1 ]; then
+    HYPERVISOR_ARG="--uri $1"
+fi
+
 docker build --build-arg SUSE_IMAGE=$SUSE_IMAGE \
              -t $TARGET_IMAGE                   \
              -f tests/Dockerfile.opensuse tests
@@ -14,5 +20,5 @@ docker run -v $(pwd)/tests:/tests       \
 ./run --docker-image $TARGET_IMAGE \
       -I tests/guest:/test         \
       -e /test/selfcheck           \
-      --uri $HYPERVISOR_URI       \
+      $HYPERVISOR_ARG              \
       tests/kernel
